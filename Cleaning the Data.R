@@ -30,7 +30,7 @@ Pikachu <- Pikachu[c("Company Name", "StateId", "City", "NAICS Des.", "NAICS cod
 library(plyr)
 names(Pikachu)[names(Pikachu)=="Company Name"] <- "Company_Names"
 names(Pikachu)[names(Pikachu)=="NAICS Des."] <- "NAICS_Des"
-names(Pikachu)[names(Pikachu)=="NAICS Code"] <- "NAICS_Code"
+names(Pikachu)[names(Pikachu)=="NAICS code"] <- "NAICS_Code"
 names(Pikachu)[names(Pikachu)=="Location Type"] <- "Location_Type"
 names(Pikachu)[names(Pikachu)=="Phone Number"] <- "Phone_Number"
 
