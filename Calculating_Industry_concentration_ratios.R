@@ -2,20 +2,32 @@
 # Kristopher C. Toll
 
 # Reading in the data
-hoovs <- read.csv(file =  "C:/Users/Kristopher/odrive/Google Drive/Shared with Me/H20/Working Files/Raw_data/Clean_Company_listing.csv")
+library(readr)
+hoovs <- read_csv("C:/Users/Kristopher/odrive/Google Drive/Shared with Me/H20/Working Files/Raw_data/Clean_Company_listing.csv", 
+                  col_types = cols(Employees = col_number(), 
+                                   Sales_per_Mil = col_number()))
 
-# Load in libraries
+# subset out branches and Solid Waste Landfill. 
 
-library(ggplot2)
-library(mosaic)
-library(plotly)
-library(DT)
-library(plyr)
+hoovs_sub <- subset(hoovs, Location_Type != "Branch" & NAICS_Des != "Solid Waste Landfill")
 
-# subset out branches
+# Create a seperate data object for each state.
+# This will ensure that market share are only calculated for each state rather than across all four.
 
-hoovs_noB <- subset(hoovs, Location.Type != "Branch")
+NV <- subset(hoovs_sub, StateId != "AZ" & StateId != "ID" & StateId != "UT")
+AZ <- subset(hoovs_sub, StateId != "NV" & StateId != "ID" & StateId != "UT")
+ID <- subset(hoovs_sub, StateId != "AZ" & StateId != "NV" & StateId != "UT")
+UT <- subset(hoovs_sub, StateId != "AZ" & StateId != "ID" & StateId != "NV")
 
-# Create a Column for State
+# It is also neccesary to seperate industry
+# Start with Nevada
 
-hoovs_noB$State <- strsplit()
+NV_Collection <- subset(NV, NAICS_Des != "Hazardous Waste Treatment and Disposal"
+                        & NAICS_Des != "Other Nonhazardous Waste Treatment and Disposal" 
+                        & NAICS_Des != "Remediation Services"
+                        & NAICS_Des != "Solid Waste Combuster and Incineratros")
+
+# Calculate market concentration ratios
+
+NV_Collection$C4 <- (NV_Collection$Sales_per_Mil/sum(NV_Collection$Sales_per_Mil))*100 
+NV_Collection$HHI <- NV_Collection$C4^2
