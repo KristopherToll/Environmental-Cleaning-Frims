@@ -9,9 +9,9 @@ Hoover_Company_Listings <- read_excel("C:/Users/Kristopher/odrive/Google Drive/S
 
 # Removing NA rows
 
-Pikachu <- na.omit(Hoover_Company_Listings)
+no_na <- na.omit(Hoover_Company_Listings)
 
-Pikachu$Sales_per_Mil <- gsub("M", "", Pikachu$Sales_per_Mil)
+no_na$Sales_per_Mil <- gsub("M", "", no_na$Sales_per_Mil)
 
 # Create two Columns for State and City
 
@@ -21,20 +21,20 @@ Pikachu$Sales_per_Mil <- gsub("M", "", Pikachu$Sales_per_Mil)
 # Reno NV United State
 # Las Vegas NV United State
 
-Pikachu$StateId <- regmatches(Pikachu$Location, regexpr("[A-Z]{2}", Pikachu$Location))
-Pikachu$City <- sapply(strsplit(as.character(Pikachu$Location), split=' United States', fixed=TRUE), function(x) (x[1]))
-Pikachu$City <- gsub("[A-Z]{2}", "", Pikachu$City, perl = TRUE)
+no_na$StateId <- regmatches(no_na$Location, regexpr("[A-Z]{2}", no_na$Location))
+no_na$City <- sapply(strsplit(as.character(no_na$Location), split=' United States', fixed=TRUE), function(x) (x[1]))
+no_na$City <- gsub("[A-Z]{2}", "", no_na$City, perl = TRUE)
 
-Pikachu <- Pikachu[c("Company Name", "StateId", "City", "NAICS Des.", "NAICS code", "Sales_per_Mil", "Employees", "Location Type", "SIC", "Location","Phone Number")]
+no_na <- no_na[c("Company Name", "StateId", "City", "NAICS Des.", "NAICS code", "Sales_per_Mil", "Employees", "Location Type", "SIC", "Location","Phone Number")]
 
 library(plyr)
-names(Pikachu)[names(Pikachu)=="Company Name"] <- "Company_Names"
-names(Pikachu)[names(Pikachu)=="NAICS Des."] <- "NAICS_Des"
-names(Pikachu)[names(Pikachu)=="NAICS code"] <- "NAICS_Code"
-names(Pikachu)[names(Pikachu)=="Location Type"] <- "Location_Type"
-names(Pikachu)[names(Pikachu)=="Phone Number"] <- "Phone_Number"
+names(no_na)[names(no_na)=="Company Name"] <- "Company_Names"
+names(no_na)[names(no_na)=="NAICS Des."] <- "NAICS_Des"
+names(no_na)[names(no_na)=="NAICS code"] <- "NAICS_Code"
+names(no_na)[names(no_na)=="Location Type"] <- "Location_Type"
+names(no_na)[names(no_na)=="Phone Number"] <- "Phone_Number"
 
 # Save as Excel file and dta file
 library(foreign)
-write.csv(Pikachu, file = "C:/Users/Kristopher/odrive/Google Drive/Shared with Me/H20/Working Files/Raw_data/Clean_Company_listing.csv")
-write.dta(Pikachu, file = "C:/Users/Kristopher/odrive/Google Drive/Shared with Me/H20/Working Files/Raw_data/Clean_Company_listing.dta")
+write.csv(no_na, file = "C:/Users/Kristopher/odrive/Google Drive/Shared with Me/H20/Working Files/Raw_data/Clean_Company_listing.csv")
+write.dta(no_na, file = "C:/Users/Kristopher/odrive/Google Drive/Shared with Me/H20/Working Files/Raw_data/Clean_Company_listing.dta")
