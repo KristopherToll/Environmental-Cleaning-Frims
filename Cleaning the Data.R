@@ -34,7 +34,18 @@ names(no_na)[names(no_na)=="NAICS code"] <- "NAICS_Code"
 names(no_na)[names(no_na)=="Location Type"] <- "Location_Type"
 names(no_na)[names(no_na)=="Phone Number"] <- "Phone_Number"
 
+# Get rid of everything but Remediation, hazardous waste collection and disposal
+
+HazFrims <- no_na
+
+HazFrims <- subset(HazFrims, NAICS_Des != "Other Nonhazardous Waste Treatment and Disposal"
+                   & NAICS_Des != "Other Waste Collection"
+                   & NAICS_Des != "Soild Waste Collection"
+                   & NAICS_Des != "Solid Waste Combustors and Incinerators"
+                   & NAICS_Des != "Solid Waste Landfill")
+
+
 # Save as Excel file and dta file
 library(foreign)
-write.csv(no_na, file = "C:/Users/Kristopher/odrive/Google Drive/Shared with Me/H20/Working Files/Raw_data/Clean_Company_listing.csv")
-write.dta(no_na, file = "C:/Users/Kristopher/odrive/Google Drive/Shared with Me/H20/Working Files/Raw_data/Clean_Company_listing.dta")
+write.csv(HazFrims, file = "C:/Users/Kristopher/odrive/Google Drive/Shared with Me/H20/Working Files/Raw_data/HazFirms.csv")
+write.dta(HazFrims, file = "C:/Users/Kristopher/odrive/Google Drive/Shared with Me/H20/Working Files/Raw_data/HazFirms.dta")
