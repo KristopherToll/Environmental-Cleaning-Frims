@@ -44,8 +44,20 @@ HazFrims <- subset(HazFrims, NAICS_Des != "Other Nonhazardous Waste Treatment an
                    & NAICS_Des != "Solid Waste Combustors and Incinerators"
                    & NAICS_Des != "Solid Waste Landfill")
 
+HazFrims <- subset(HazFrims, HazFrims$SIC != "17990801 Asbestos removal and encapsulation"
+                   & SIC != "17990802 Lead burning"
+                   & SIC != "49530101 Acid waste, collection and disposal"
+                   & SIC != "49530103 Radioactive waste materials, disposal"
+                   & SIC != "49530200 Refuse collection and disposal services"
+                   & SIC != "49539904 Medical waste disposal")
 
-# Save as Excel file and dta file
+# Make sure that varaible types are correct
+HazFrims$Phone_Number <- paste(HazFrims$Phone_Number, "N")
+HazFrims$Sales_per_Mil <- gsub(",", "", HazFrims$Sales_per_Mil)
+HazFrims$Employees <- gsub(",", "", HazFrims$Employees)
+
+
+# Save as CSV file and dta file
 library(foreign)
 write.csv(HazFrims, file = "C:/Users/Kristopher/odrive/Google Drive/Shared with Me/H20/Working Files/Raw_data/HazFirms.csv")
 write.dta(HazFrims, file = "C:/Users/Kristopher/odrive/Google Drive/Shared with Me/H20/Working Files/Raw_data/HazFirms.dta")
