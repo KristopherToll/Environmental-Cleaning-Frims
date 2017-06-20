@@ -51,11 +51,16 @@ HazFrims <- subset(HazFrims, HazFrims$SIC != "17990801 Asbestos removal and enca
                    & SIC != "49530200 Refuse collection and disposal services"
                    & SIC != "49539904 Medical waste disposal")
 
-# Make sure that varaible types are correct
+# Make sure that varaible types are correct and remove unneeded characters
 HazFrims$Phone_Number <- paste(HazFrims$Phone_Number, "N")
 HazFrims$Sales_per_Mil <- gsub(",", "", HazFrims$Sales_per_Mil)
+HazFrims$Sales_per_Mil <- gsub(" ", "", HazFrims$Sales_per_Mil)
 HazFrims$Employees <- gsub(",", "", HazFrims$Employees)
-
+HazFrims$Employees <- gsub("[[:space:]]", "", HazFrims$Employees, fixed = TRUE)
+HazFrims$Employees <- gsub("  ", "", HazFrims$Employees)
+library(stringi)
+HazFrims$Employees <- str_trim(HazFrims$Employees, side = "right")
+HazFrims$Ratio <- na.omit(as.numeric(HazFrims$Sales_per_Mil)/as.numeric(HazFrims$Employees))
 
 # Save as CSV file and dta file
 library(foreign)
